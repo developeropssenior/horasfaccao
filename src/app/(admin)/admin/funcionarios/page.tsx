@@ -136,19 +136,20 @@ export default function FuncionariosPage() {
 
   if (loadingUsuario || !usuario) {
     return (
-      <div className="min-h-[200px] flex items-center justify-center">
-        <p className="text-slate-600">Carregando...</p>
+      <div className="min-h-[200px] flex flex-col items-center justify-center gap-3">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-slate-600 text-sm">Carregando...</p>
       </div>
     );
   }
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <h1 className="text-2xl font-bold text-slate-800">Funcionários</h1>
         <button
           onClick={openCreate}
-          className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
+          className="px-4 py-3 bg-primary text-white font-medium rounded-xl hover:opacity-90 transition-opacity min-h-[44px]"
         >
           Cadastrar Funcionário
         </button>
@@ -157,65 +158,113 @@ export default function FuncionariosPage() {
       {isLoading ? (
         <p className="text-slate-600">Carregando...</p>
       ) : (
-        <div className="bg-white rounded-xl shadow overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Nome</th>
-                <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Email</th>
-                <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">R$/hora</th>
-                <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Status</th>
-                <th className="text-right px-4 py-3 text-sm font-semibold text-slate-700">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {funcionarios.map((f) => (
-                <tr key={f.id} className="border-b border-slate-100 hover:bg-slate-50">
-                  <td className="px-4 py-3 text-slate-800">{f.nome}</td>
-                  <td className="px-4 py-3 text-slate-600">{f.email}</td>
-                  <td className="px-4 py-3 text-slate-800">
-                    R$ {Number(f.valor_hora ?? 0).toFixed(2).replace('.', ',')}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                        f.ativo ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
-                      }`}
-                    >
-                      {f.ativo ? 'Ativo' : 'Inativo'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => openEdit(f)}
-                      className="text-blue-600 hover:underline text-sm"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() =>
-                        updateMutation.mutate({
-                          id: f.id,
-                          nome: f.nome,
-                          valor_hora: Number(f.valor_hora ?? 0),
-                          ativo: !f.ativo,
-                        })
-                      }
-                      className="ml-3 text-slate-600 hover:underline text-sm"
-                    >
-                      {f.ativo ? 'Inativar' : 'Ativar'}
-                    </button>
-                  </td>
+        <>
+          {/* Desktop table */}
+          <div className="hidden md:block bg-white rounded-2xl shadow-lg shadow-black/5 overflow-hidden">
+            <table className="w-full">
+              <thead className="bg-slate-50 border-b border-slate-200">
+                <tr>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Nome</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Email</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">R$/hora</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Status</th>
+                  <th className="text-right px-4 py-3 text-sm font-semibold text-slate-700">Ações</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {funcionarios.map((f) => (
+                  <tr key={f.id} className="border-b border-slate-100 hover:bg-slate-50">
+                    <td className="px-4 py-3 text-slate-800">{f.nome}</td>
+                    <td className="px-4 py-3 text-slate-600">{f.email}</td>
+                    <td className="px-4 py-3 text-slate-800">
+                      R$ {Number(f.valor_hora ?? 0).toFixed(2).replace('.', ',')}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                          f.ativo ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+                        }`}
+                      >
+                        {f.ativo ? 'Ativo' : 'Inativo'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <button
+                        onClick={() => openEdit(f)}
+                        className="text-primary hover:underline text-sm min-h-[44px]"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() =>
+                          updateMutation.mutate({
+                            id: f.id,
+                            nome: f.nome,
+                            valor_hora: Number(f.valor_hora ?? 0),
+                            ativo: !f.ativo,
+                          })
+                        }
+                        className="ml-3 text-slate-600 hover:underline text-sm min-h-[44px]"
+                      >
+                        {f.ativo ? 'Inativar' : 'Ativar'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* Mobile cards */}
+          <div className="md:hidden space-y-3">
+            {funcionarios.map((f) => (
+              <div
+                key={f.id}
+                className="bg-white rounded-2xl shadow-lg shadow-black/5 p-4 space-y-3"
+              >
+                <div className="font-medium text-slate-800">{f.nome}</div>
+                <p className="text-sm text-slate-600 truncate">{f.email}</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-800">
+                    R$ {Number(f.valor_hora ?? 0).toFixed(2).replace('.', ',')}/h
+                  </span>
+                  <span
+                    className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                      f.ativo ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+                    }`}
+                  >
+                    {f.ativo ? 'Ativo' : 'Inativo'}
+                  </span>
+                </div>
+                <div className="flex gap-2 pt-2">
+                  <button
+                    onClick={() => openEdit(f)}
+                    className="flex-1 py-2 text-primary border border-primary/30 rounded-lg text-sm font-medium min-h-[44px]"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() =>
+                      updateMutation.mutate({
+                        id: f.id,
+                        nome: f.nome,
+                        valor_hora: Number(f.valor_hora ?? 0),
+                        ativo: !f.ativo,
+                      })
+                    }
+                    className="flex-1 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium min-h-[44px] hover:bg-slate-200"
+                  >
+                    {f.ativo ? 'Inativar' : 'Ativar'}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 my-auto max-h-[90dvh] overflow-y-auto">
             <h2 className="text-lg font-bold text-slate-800 mb-4">
               {editingId ? 'Editar Funcionário' : 'Cadastrar Funcionário'}
             </h2>
@@ -273,14 +322,14 @@ export default function FuncionariosPage() {
                 <button
                   type="submit"
                   disabled={criarMutation.isPending || updateMutation.isPending}
-                  className="flex-1 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  className="flex-1 py-2 bg-primary text-white font-medium rounded-xl hover:opacity-90 disabled:opacity-50 min-h-[44px]"
                 >
                   {editingId ? 'Salvar' : 'Cadastrar'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 py-2 bg-slate-200 text-slate-800 font-medium rounded-lg hover:bg-slate-300"
+                  className="flex-1 py-2 bg-slate-200 text-slate-800 font-medium rounded-xl hover:bg-slate-300 min-h-[44px]"
                 >
                   Cancelar
                 </button>

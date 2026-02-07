@@ -161,8 +161,9 @@ function FolhaContent() {
 
   if (loadingUsuario || !usuario) {
     return (
-      <div className="min-h-[200px] flex items-center justify-center">
-        <p className="text-slate-600">Carregando...</p>
+      <div className="min-h-[200px] flex flex-col items-center justify-center gap-3">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-slate-600 text-sm">Carregando...</p>
       </div>
     );
   }
@@ -189,7 +190,7 @@ function FolhaContent() {
           <button
             onClick={() => gerarMutation.mutate()}
             disabled={!periodoId || gerarMutation.isPending}
-            className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 bg-primary text-white font-medium rounded-xl hover:opacity-90 disabled:opacity-50 min-h-[44px]"
           >
             {gerarMutation.isPending ? 'Gerando...' : 'Gerar/Salvar Folha'}
           </button>
@@ -212,7 +213,7 @@ function FolhaContent() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow overflow-hidden">
+      <div className="hidden md:block bg-white rounded-2xl shadow-lg shadow-black/5 overflow-hidden">
         <table className="w-full">
           <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
@@ -259,6 +260,35 @@ function FolhaContent() {
           <p className="p-8 text-center text-slate-500">Selecione um período</p>
         )}
       </div>
+      {folhaGerada.length === 0 && (
+        <div className="md:hidden bg-white rounded-2xl shadow-lg shadow-black/5 p-8 text-center text-slate-500">
+          {!periodoId ? 'Selecione um período' : 'Clique em Gerar para calcular a folha'}
+        </div>
+      )}
+      {folhaGerada.length > 0 && (
+        <div className="md:hidden space-y-3">
+          {folhaGerada.map((item, i) => (
+            <div key={i} className="bg-white rounded-2xl shadow-lg shadow-black/5 p-4">
+              <div className="font-medium text-slate-800 mb-2">{item.nome}</div>
+              <div className="flex justify-between text-sm text-slate-600 mb-1">
+                <span>Horas</span>
+                <span>{item.total_horas.toFixed(2)}h</span>
+              </div>
+              <div className="flex justify-between text-sm text-slate-600 mb-1">
+                <span>R$/hora</span>
+                <span>R$ {item.valor_hora.toFixed(2).replace('.', ',')}</span>
+              </div>
+              <div className="flex justify-between font-medium text-slate-800 pt-2 border-t border-slate-100">
+                <span>Total</span>
+                <span>R$ {item.total_pagar.toFixed(2).replace('.', ',')}</span>
+              </div>
+            </div>
+          ))}
+          <div className="bg-slate-50 rounded-2xl p-4 font-bold text-slate-800">
+            Total Geral: R$ {totalGeral.toFixed(2).replace('.', ',')}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

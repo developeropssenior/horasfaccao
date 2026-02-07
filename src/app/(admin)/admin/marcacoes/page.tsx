@@ -112,8 +112,9 @@ export default function MarcacoesPage() {
 
   if (loadingUsuario || !usuario) {
     return (
-      <div className="min-h-[200px] flex items-center justify-center">
-        <p className="text-slate-600">Carregando...</p>
+      <div className="min-h-[200px] flex flex-col items-center justify-center gap-3">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-slate-600 text-sm">Carregando...</p>
       </div>
     );
   }
@@ -128,7 +129,7 @@ export default function MarcacoesPage() {
           <select
             value={funcionarioId}
             onChange={(e) => setFuncionarioId(e.target.value)}
-            className="px-4 py-2 border border-slate-300 rounded-lg min-w-[200px]"
+            className="px-4 py-2 border border-slate-200 rounded-xl min-w-0 md:min-w-[200px]"
           >
             <option value="">Selecione...</option>
             {funcionarios.map((f) => (
@@ -158,7 +159,7 @@ export default function MarcacoesPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow p-4 mb-4">
+      <div className="bg-white rounded-2xl shadow-lg shadow-black/5 p-4 mb-4">
         <p className="text-sm text-slate-600">Total de horas no período</p>
         <p className="text-2xl font-bold text-slate-800">
           {totalHoras.toFixed(2)}h ({Math.floor(totalHoras)}h {Math.round((totalHoras % 1) * 60)}m)
@@ -167,89 +168,148 @@ export default function MarcacoesPage() {
 
       {isLoading ? (
         <p className="text-slate-600">Carregando...</p>
-      ) : (
-        <div className="bg-white rounded-xl shadow overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">
-                  Data/Hora
-                </th>
-                <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Tipo</th>
-                <th className="text-right px-4 py-3 text-sm font-semibold text-slate-700">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {marcacoes.map((m) => (
-                <tr key={m.id} className="border-b border-slate-100 hover:bg-slate-50">
-                  <td className="px-4 py-3 text-slate-800">
-                    {editingId === m.id ? (
-                      <input
-                        type="datetime-local"
-                        value={editValue}
-                        onChange={(e) => setEditValue(e.target.value)}
-                        className="px-3 py-1 border border-slate-300 rounded"
-                      />
-                    ) : (
-                      format(parseISO(m.data_hora), "dd/MM/yyyy 'às' HH:mm", {
-                        locale: ptBR,
-                      })
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={
-                        m.tipo === 'entrada'
-                          ? 'text-green-600 font-medium'
-                          : 'text-orange-600 font-medium'
-                      }
-                    >
-                      {m.tipo === 'entrada' ? 'Entrada' : 'Saída'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    {editingId === m.id ? (
-                      <>
-                        <button
-                          onClick={() =>
-                            updateMutation.mutate({
-                              id: m.id,
-                              data_hora: new Date(editValue).toISOString(),
-                            })
-                          }
-                          className="text-blue-600 hover:underline text-sm mr-2"
-                        >
-                          Salvar
-                        </button>
-                        <button
-                          onClick={() => setEditingId(null)}
-                          className="text-slate-600 hover:underline text-sm"
-                        >
-                          Cancelar
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          setEditingId(m.id);
-                          setEditValue(format(parseISO(m.data_hora), "yyyy-MM-dd'T'HH:mm"));
-                        }}
-                        className="text-blue-600 hover:underline text-sm"
-                      >
-                        Editar
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {marcacoes.length === 0 && (
-            <p className="p-8 text-center text-slate-500">
-              Nenhuma marcação no período selecionado
-            </p>
-          )}
+      ) : marcacoes.length === 0 ? (
+        <div className="bg-white rounded-2xl shadow-lg shadow-black/5 p-8 text-center text-slate-500">
+          Nenhuma marcação no período selecionado
         </div>
+      ) : (
+        <>
+          {/* Desktop table */}
+          <div className="hidden md:block bg-white rounded-2xl shadow-lg shadow-black/5 overflow-hidden">
+            <table className="w-full">
+              <thead className="bg-slate-50 border-b border-slate-200">
+                <tr>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Data/Hora</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Tipo</th>
+                  <th className="text-right px-4 py-3 text-sm font-semibold text-slate-700">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {marcacoes.map((m) => (
+                  <tr key={m.id} className="border-b border-slate-100 hover:bg-slate-50">
+                    <td className="px-4 py-3 text-slate-800">
+                      {editingId === m.id ? (
+                        <input
+                          type="datetime-local"
+                          value={editValue}
+                          onChange={(e) => setEditValue(e.target.value)}
+                          className="px-3 py-1.5 border border-slate-300 rounded-lg"
+                        />
+                      ) : (
+                        format(parseISO(m.data_hora), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={
+                          m.tipo === 'entrada' ? 'text-green-600 font-medium' : 'text-orange-600 font-medium'
+                        }
+                      >
+                        {m.tipo === 'entrada' ? 'Entrada' : 'Saída'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      {editingId === m.id ? (
+                        <>
+                          <button
+                            onClick={() =>
+                              updateMutation.mutate({
+                                id: m.id,
+                                data_hora: new Date(editValue).toISOString(),
+                              })
+                            }
+                            className="text-primary hover:underline text-sm mr-2 min-h-[44px]"
+                          >
+                            Salvar
+                          </button>
+                          <button
+                            onClick={() => setEditingId(null)}
+                            className="text-slate-600 hover:underline text-sm min-h-[44px]"
+                          >
+                            Cancelar
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => {
+                            setEditingId(m.id);
+                            setEditValue(format(parseISO(m.data_hora), "yyyy-MM-dd'T'HH:mm"));
+                          }}
+                          className="text-primary hover:underline text-sm min-h-[44px]"
+                        >
+                          Editar
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* Mobile cards */}
+          <div className="md:hidden space-y-3">
+            {marcacoes.map((m) => (
+              <div
+                key={m.id}
+                className="bg-white rounded-2xl shadow-lg shadow-black/5 p-4 space-y-3"
+              >
+                <div className="flex justify-between items-start gap-2">
+                  <span
+                    className={
+                      m.tipo === 'entrada' ? 'text-green-600 font-medium' : 'text-orange-600 font-medium'
+                    }
+                  >
+                    {m.tipo === 'entrada' ? 'Entrada' : 'Saída'}
+                  </span>
+                  {editingId !== m.id && (
+                    <span className="text-slate-700 text-sm text-right">
+                      {format(parseISO(m.data_hora), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                    </span>
+                  )}
+                </div>
+                {editingId === m.id ? (
+                  <div className="space-y-2">
+                    <input
+                      type="datetime-local"
+                      value={editValue}
+                      onChange={(e) => setEditValue(e.target.value)}
+                      className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() =>
+                          updateMutation.mutate({
+                            id: m.id,
+                            data_hora: new Date(editValue).toISOString(),
+                          })
+                        }
+                        className="flex-1 py-2 bg-primary text-white rounded-lg text-sm font-medium min-h-[44px]"
+                      >
+                        Salvar
+                      </button>
+                      <button
+                        onClick={() => setEditingId(null)}
+                        className="flex-1 py-2 bg-slate-200 text-slate-800 rounded-lg text-sm font-medium min-h-[44px]"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setEditingId(m.id);
+                      setEditValue(format(parseISO(m.data_hora), "yyyy-MM-dd'T'HH:mm"));
+                    }}
+                    className="w-full py-2 text-primary text-sm font-medium rounded-lg border border-primary/30 min-h-[44px]"
+                  >
+                    Editar
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

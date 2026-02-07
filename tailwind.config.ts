@@ -11,6 +11,13 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: {
+          DEFAULT: "#4F46E5",
+          foreground: "#ffffff",
+        },
+      },
+      minHeight: {
+        dvh: "100dvh",
       },
     },
   },

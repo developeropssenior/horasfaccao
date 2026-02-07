@@ -97,8 +97,9 @@ export default function RelatoriosPage() {
 
   if (loadingUsuario || !usuario) {
     return (
-      <div className="min-h-[200px] flex items-center justify-center">
-        <p className="text-slate-600">Carregando...</p>
+      <div className="min-h-[200px] flex flex-col items-center justify-center gap-3">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-slate-600 text-sm">Carregando...</p>
       </div>
     );
   }
@@ -153,7 +154,7 @@ export default function RelatoriosPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow p-6 mb-6">
+      <div className="bg-white rounded-2xl shadow-lg shadow-black/5 p-6 mb-6">
         <p className="text-sm text-slate-600">Total de horas em {labelPeriodo}</p>
         <p className="text-3xl font-bold text-slate-800">
           {totalHoras.toFixed(2)}h ({Math.floor(totalHoras)}h {Math.round((totalHoras % 1) * 60)}m)
@@ -163,32 +164,38 @@ export default function RelatoriosPage() {
       {isLoading ? (
         <p className="text-slate-600">Carregando...</p>
       ) : (
-        <div className="bg-white rounded-xl shadow overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">
-                  Funcionário
-                </th>
-                <th className="text-right px-4 py-3 text-sm font-semibold text-slate-700">
-                  Horas
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {horasPorFuncionario
-                .filter((f) => f.horas > 0 || !funcionarioId)
-                .map((f) => (
-                  <tr key={f.nome} className="border-b border-slate-100 hover:bg-slate-50">
-                    <td className="px-4 py-3 text-slate-800">{f.nome}</td>
-                    <td className="px-4 py-3 text-right text-slate-800">
-                      {f.horas.toFixed(2)}h
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
+        <>
+          <div className="hidden md:block bg-white rounded-2xl shadow-lg shadow-black/5 overflow-hidden">
+            <table className="w-full">
+              <thead className="bg-slate-50 border-b border-slate-200">
+                <tr>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Funcionário</th>
+                  <th className="text-right px-4 py-3 text-sm font-semibold text-slate-700">Horas</th>
+                </tr>
+              </thead>
+              <tbody>
+                {horasPorFuncionario
+                  .filter((f) => f.horas > 0 || !funcionarioId)
+                  .map((f) => (
+                    <tr key={f.nome} className="border-b border-slate-100 hover:bg-slate-50">
+                      <td className="px-4 py-3 text-slate-800">{f.nome}</td>
+                      <td className="px-4 py-3 text-right text-slate-800">{f.horas.toFixed(2)}h</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="md:hidden space-y-3">
+            {horasPorFuncionario
+              .filter((f) => f.horas > 0 || !funcionarioId)
+              .map((f) => (
+                <div key={f.nome} className="bg-white rounded-2xl shadow-lg shadow-black/5 p-4 flex justify-between items-center">
+                  <span className="font-medium text-slate-800">{f.nome}</span>
+                  <span className="text-slate-700 font-medium">{f.horas.toFixed(2)}h</span>
+                </div>
+              ))}
+          </div>
+        </>
       )}
     </div>
   );

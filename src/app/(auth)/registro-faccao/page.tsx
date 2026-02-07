@@ -50,17 +50,19 @@ export default function RegistroFaccaoPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4 py-12">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-center text-slate-800 mb-2">
-          Cadastrar Facção
-        </h1>
-        <p className="text-sm text-slate-600 text-center mb-6">
-          Configure sua facção e crie a conta do administrador
-        </p>
+    <div className="min-h-dvh flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 px-4 py-12">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-black/5 border border-slate-100 p-8">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-bold text-slate-800">
+            Cadastrar Facção
+          </h1>
+          <p className="text-sm text-slate-600 mt-1">
+            Configure sua facção e crie a conta do administrador
+          </p>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="nomeFaccao" className="block text-sm font-medium text-slate-700 mb-1">
+            <label htmlFor="nomeFaccao" className="block text-sm font-medium text-slate-700 mb-1.5">
               Nome da Facção
             </label>
             <input
@@ -69,12 +71,12 @@ export default function RegistroFaccaoPage() {
               value={nomeFaccao}
               onChange={(e) => setNomeFaccao(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
               placeholder="Ex: Facção Costura ABC"
             />
           </div>
           <div>
-            <label htmlFor="nomeAdmin" className="block text-sm font-medium text-slate-700 mb-1">
+            <label htmlFor="nomeAdmin" className="block text-sm font-medium text-slate-700 mb-1.5">
               Nome do Administrador
             </label>
             <input
@@ -83,12 +85,12 @@ export default function RegistroFaccaoPage() {
               value={nomeAdmin}
               onChange={(e) => setNomeAdmin(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
               placeholder="Seu nome completo"
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
               Email (será usado para login)
             </label>
             <input
@@ -97,12 +99,12 @@ export default function RegistroFaccaoPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="admin@facção.com"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
+              placeholder="admin@faccao.com"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
               Senha
             </label>
             <input
@@ -112,12 +114,12 @@ export default function RegistroFaccaoPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
               placeholder="Mínimo 6 caracteres"
             />
           </div>
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1.5">
               Confirmar Senha
             </label>
             <input
@@ -126,23 +128,23 @@ export default function RegistroFaccaoPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
             />
           </div>
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{error}</p>
+            <p className="text-sm text-red-600 bg-red-50 p-3 rounded-xl">{error}</p>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full py-3 min-h-[48px] bg-primary text-white font-semibold rounded-xl hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
           >
             {loading ? 'Cadastrando...' : 'Cadastrar'}
           </button>
         </form>
         <p className="mt-6 text-center text-sm text-slate-600">
           Já tem conta?{' '}
-          <Link href="/login" className="text-blue-600 hover:underline font-medium">
+          <Link href="/login" className="text-primary hover:underline font-medium">
             Fazer login
           </Link>
         </p>

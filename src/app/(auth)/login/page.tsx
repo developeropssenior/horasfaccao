@@ -23,7 +23,7 @@ export default function LoginPage() {
 
   if (checkingAuth) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-100">
+      <div className="min-h-dvh flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
         <p className="text-slate-600">Carregando...</p>
       </div>
     );
@@ -62,14 +62,17 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-center text-slate-800 mb-6">
-          Controle de Ponto
-        </h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-dvh flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 px-4 py-8">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-black/5 border border-slate-100 p-8">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-slate-800">
+            Controle de Ponto
+          </h1>
+          <p className="text-slate-500 text-sm mt-1">Horas Facção</p>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
               Email
             </label>
             <input
@@ -78,12 +81,12 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
               placeholder="seu@email.com"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
               Senha
             </label>
             <input
@@ -92,23 +95,23 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
             />
           </div>
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{error}</p>
+            <p className="text-sm text-red-600 bg-red-50 p-3 rounded-xl">{error}</p>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full py-3 min-h-[48px] bg-primary text-white font-semibold rounded-xl hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
         <p className="mt-6 text-center text-sm text-slate-600">
           Não tem conta?{' '}
-          <Link href="/registro-faccao" className="text-blue-600 hover:underline font-medium">
+          <Link href="/registro-faccao" className="text-primary hover:underline font-medium">
             Cadastrar facção
           </Link>
         </p>

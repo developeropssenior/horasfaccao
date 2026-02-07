@@ -86,19 +86,19 @@ export default async function AdminDashboardPage() {
     <div>
       <h1 className="text-2xl font-bold text-slate-800 mb-6">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-xl shadow p-6">
+        <div className="bg-white rounded-2xl shadow-lg shadow-black/5 p-6 hover:shadow-xl transition-shadow">
           <p className="text-sm text-slate-600">Funcionários ativos</p>
-          <p className="text-3xl font-bold text-slate-800">{data.funcionariosAtivos}</p>
+          <p className="text-3xl font-bold text-slate-800 mt-1">{data.funcionariosAtivos}</p>
         </div>
-        <div className="bg-white rounded-xl shadow p-6">
+        <div className="bg-white rounded-2xl shadow-lg shadow-black/5 p-6 hover:shadow-xl transition-shadow">
           <p className="text-sm text-slate-600">Horas em {data.mesAtual}</p>
-          <p className="text-3xl font-bold text-slate-800">
+          <p className="text-3xl font-bold text-slate-800 mt-1">
             {data.totalHorasMes.toFixed(1)}h
           </p>
         </div>
-        <div className="bg-white rounded-xl shadow p-6">
+        <div className="bg-white rounded-2xl shadow-lg shadow-black/5 p-6 hover:shadow-xl transition-shadow">
           <p className="text-sm text-slate-600">Custo estimado (mês)</p>
-          <p className="text-3xl font-bold text-slate-800">
+          <p className="text-3xl font-bold text-slate-800 mt-1">
             R$ {data.custoTotal.toFixed(2).replace('.', ',')}
           </p>
         </div>

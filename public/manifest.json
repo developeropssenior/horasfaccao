@@ -3,6 +3,7 @@
   "short_name": "Horas Facção",
   "description": "Sistema de controle de ponto e folha de pagamento para facção de costura",
   "start_url": "/",
+  "display_override": ["standalone", "minimal-ui"],
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0f172a",
