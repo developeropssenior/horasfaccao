@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import { QueryProvider } from "@/components/providers/QueryProvider";
+import { PwaUpdatePrompt } from "@/components/PwaUpdatePrompt";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -38,6 +39,7 @@ export default function RootLayout({
       <body className={`${plusJakarta.variable} font-sans antialiased`}>
         <QueryProvider>
           {children}
+          <PwaUpdatePrompt />
           <Toaster richColors position="bottom-center" />
         </QueryProvider>
       </body>
