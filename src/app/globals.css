@@ -53,4 +53,17 @@ body {
   .pb-safe {
     padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
+
+  /* Bottom sheet slide-up (menu admin mobile) */
+  .sheet-slide-up {
+    animation: sheet-slide-up 0.3s ease-out;
+  }
+  @keyframes sheet-slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
 }

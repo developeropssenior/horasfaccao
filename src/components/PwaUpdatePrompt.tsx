@@ -32,7 +32,7 @@ export function PwaUpdatePrompt() {
 
     const register = async () => {
       try {
-        registration = await navigator.serviceWorker.getRegistration();
+        registration = (await navigator.serviceWorker.getRegistration()) ?? null;
         if (registration) {
           registration.addEventListener("updatefound", onUpdateFound);
           await registration.update();
