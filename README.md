@@ -78,18 +78,19 @@ A API `/api/admin/verificar-ponto-esquecido` verifica funcionários que não bat
    - "Add new site" > "Import an existing project"
    - Conecte o Git (GitHub, GitLab ou Bitbucket) e selecione o repositório
 
-2. **Configure as variáveis de ambiente**
-   - Site settings > Environment variables
-   - Adicione:
+2. **Configure as variáveis de ambiente** (obrigatório)
+   - Site settings > Environment variables > Add a variable / Import from .env
+   - Adicione **antes do primeiro deploy**:
      - `NEXT_PUBLIC_SUPABASE_URL` – URL do projeto Supabase
      - `NEXT_PUBLIC_SUPABASE_ANON_KEY` – Chave anônima
      - `SUPABASE_SERVICE_ROLE_KEY` – Service role key (para APIs admin)
      - `CRON_SECRET` – (opcional) Se usar cron externo para verificar ponto esquecido
+   - Marque "Deploy contexts" como Production (e outros se necessário)
 
 3. **Build**
    - Netlify detecta Next.js e configura o build automaticamente
    - Build command: `npm run build`
-   - Node: 18+ (configurado em `netlify.toml`)
+   - Node: 20 (configurado em `netlify.toml`)
 
 4. **Testar localmente (opcional)**
    ```bash
