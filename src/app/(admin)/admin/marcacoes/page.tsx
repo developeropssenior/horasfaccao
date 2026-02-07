@@ -8,8 +8,29 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { format, parseISO, startOfDay, endOfDay } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { MapPin } from 'lucide-react';
 import { calcularHorasDeMarcacoes } from '@/utils/calcularHoras';
 import { parseDateToLocalStart, parseDateToLocalEnd } from '@/utils/parseDateLocal';
+
+function LocalizacaoLink({ m }: { m: { latitude?: number | null; longitude?: number | null; precisao_metros?: number | null } }) {
+  const hasLoc = m.latitude != null && m.longitude != null;
+  if (!hasLoc) return <span className="text-muted-foreground text-sm">—</span>;
+  const url = `https://www.google.com/maps?q=${m.latitude},${m.longitude}`;
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1 text-primary hover:underline text-sm"
+    >
+      <MapPin className="h-3.5 w-3.5" strokeWidth={2} />
+      Ver no mapa
+      {m.precisao_metros != null && (
+        <span className="text-muted-foreground font-normal">({Math.round(m.precisao_metros)} m)</span>
+      )}
+    </a>
+  );
+}
 
 export default function MarcacoesPage() {
   const router = useRouter();
@@ -181,6 +202,7 @@ export default function MarcacoesPage() {
                 <tr>
                   <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Data/Hora</th>
                   <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Tipo</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Localização</th>
                   <th className="text-right px-4 py-3 text-sm font-semibold text-slate-700">Ações</th>
                 </tr>
               </thead>
@@ -207,6 +229,9 @@ export default function MarcacoesPage() {
                       >
                         {m.tipo === 'entrada' ? 'Entrada' : 'Saída'}
                       </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <LocalizacaoLink m={m} />
                     </td>
                     <td className="px-4 py-3 text-right">
                       {editingId === m.id ? (
@@ -266,6 +291,9 @@ export default function MarcacoesPage() {
                       {format(parseISO(m.data_hora), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
                     </span>
                   )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <LocalizacaoLink m={m} />
                 </div>
                 {editingId === m.id ? (
                   <div className="space-y-2">

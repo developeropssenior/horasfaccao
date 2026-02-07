@@ -1,12 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { createClient } from '@/lib/supabase/client';
-import { useUsuario } from '@/hooks/useUsuario';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { createClient } from "@/lib/supabase/client";
+import { useUsuario } from "@/hooks/useUsuario";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 export default function FuncionariosPage() {
   const router = useRouter();
@@ -138,7 +140,7 @@ export default function FuncionariosPage() {
     return (
       <div className="min-h-[200px] flex flex-col items-center justify-center gap-3">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-        <p className="text-slate-600 text-sm">Carregando...</p>
+        <p className="text-muted-foreground text-sm font-medium">Carregando...</p>
       </div>
     );
   }
@@ -146,56 +148,63 @@ export default function FuncionariosPage() {
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-        <h1 className="text-2xl font-bold text-slate-800">Funcionários</h1>
-        <button
-          onClick={openCreate}
-          className="px-4 py-3 bg-primary text-white font-medium rounded-xl hover:opacity-90 transition-opacity min-h-[44px]"
-        >
-          Cadastrar Funcionário
-        </button>
+        <h1 className="text-2xl font-bold text-foreground tracking-tight">
+          Funcionários
+        </h1>
+        <Button onClick={openCreate}>Cadastrar Funcionário</Button>
       </div>
 
       {isLoading ? (
-        <p className="text-slate-600">Carregando...</p>
+        <p className="text-muted-foreground font-medium">Carregando...</p>
       ) : (
         <>
           {/* Desktop table */}
-          <div className="hidden md:block bg-white rounded-2xl shadow-lg shadow-black/5 overflow-hidden">
+          <div className="hidden md:block rounded-2xl border border-border bg-card overflow-hidden shadow-card">
             <table className="w-full">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-muted border-b border-border">
                 <tr>
-                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Nome</th>
-                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Email</th>
-                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">R$/hora</th>
-                  <th className="text-left px-4 py-3 text-sm font-semibold text-slate-700">Status</th>
-                  <th className="text-right px-4 py-3 text-sm font-semibold text-slate-700">Ações</th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-foreground">
+                    Nome
+                  </th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-foreground">
+                    Email
+                  </th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-foreground">
+                    R$/hora
+                  </th>
+                  <th className="text-left px-4 py-3 text-sm font-semibold text-foreground">
+                    Status
+                  </th>
+                  <th className="text-right px-4 py-3 text-sm font-semibold text-foreground">
+                    Ações
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {funcionarios.map((f) => (
-                  <tr key={f.id} className="border-b border-slate-100 hover:bg-slate-50">
-                    <td className="px-4 py-3 text-slate-800">{f.nome}</td>
-                    <td className="px-4 py-3 text-slate-600">{f.email}</td>
-                    <td className="px-4 py-3 text-slate-800">
-                      R$ {Number(f.valor_hora ?? 0).toFixed(2).replace('.', ',')}
+                  <tr key={f.id} className="border-b border-border hover:bg-muted/50">
+                    <td className="px-4 py-3 text-foreground">{f.nome}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{f.email}</td>
+                    <td className="px-4 py-3 text-foreground">
+                      R$ {Number(f.valor_hora ?? 0).toFixed(2).replace(".", ",")}
                     </td>
                     <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                          f.ativo ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
-                        }`}
-                      >
-                        {f.ativo ? 'Ativo' : 'Inativo'}
-                      </span>
+                      <Badge variant={f.ativo ? "success" : "secondary"}>
+                        {f.ativo ? "Ativo" : "Inativo"}
+                      </Badge>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <button
+                      <Button
+                        variant="link"
+                        size="sm"
                         onClick={() => openEdit(f)}
-                        className="text-primary hover:underline text-sm min-h-[44px]"
+                        className="min-h-[44px]"
                       >
                         Editar
-                      </button>
-                      <button
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         onClick={() =>
                           updateMutation.mutate({
                             id: f.id,
@@ -204,10 +213,10 @@ export default function FuncionariosPage() {
                             ativo: !f.ativo,
                           })
                         }
-                        className="ml-3 text-slate-600 hover:underline text-sm min-h-[44px]"
+                        className="ml-3 text-muted-foreground min-h-[44px]"
                       >
-                        {f.ativo ? 'Inativar' : 'Ativar'}
-                      </button>
+                        {f.ativo ? "Inativar" : "Ativar"}
+                      </Button>
                     </td>
                   </tr>
                 ))}
@@ -219,30 +228,29 @@ export default function FuncionariosPage() {
             {funcionarios.map((f) => (
               <div
                 key={f.id}
-                className="bg-white rounded-2xl shadow-lg shadow-black/5 p-4 space-y-3"
+                className="rounded-2xl border border-border bg-card p-4 space-y-3 shadow-card"
               >
-                <div className="font-medium text-slate-800">{f.nome}</div>
-                <p className="text-sm text-slate-600 truncate">{f.email}</p>
+                <div className="font-medium text-foreground">{f.nome}</div>
+                <p className="text-sm text-muted-foreground truncate">{f.email}</p>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-800">
-                    R$ {Number(f.valor_hora ?? 0).toFixed(2).replace('.', ',')}/h
+                  <span className="text-foreground">
+                    R$ {Number(f.valor_hora ?? 0).toFixed(2).replace(".", ",")}/h
                   </span>
-                  <span
-                    className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      f.ativo ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
-                    }`}
-                  >
-                    {f.ativo ? 'Ativo' : 'Inativo'}
-                  </span>
+                  <Badge variant={f.ativo ? "success" : "secondary"}>
+                    {f.ativo ? "Ativo" : "Inativo"}
+                  </Badge>
                 </div>
                 <div className="flex gap-2 pt-2">
-                  <button
+                  <Button
+                    variant="outline"
+                    className="flex-1"
                     onClick={() => openEdit(f)}
-                    className="flex-1 py-2 text-primary border border-primary/30 rounded-lg text-sm font-medium min-h-[44px]"
                   >
                     Editar
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    className="flex-1"
                     onClick={() =>
                       updateMutation.mutate({
                         id: f.id,
@@ -251,10 +259,9 @@ export default function FuncionariosPage() {
                         ativo: !f.ativo,
                       })
                     }
-                    className="flex-1 py-2 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium min-h-[44px] hover:bg-slate-200"
                   >
-                    {f.ativo ? 'Inativar' : 'Ativar'}
-                  </button>
+                    {f.ativo ? "Inativar" : "Ativar"}
+                  </Button>
                 </div>
               </div>
             ))}
@@ -263,76 +270,79 @@ export default function FuncionariosPage() {
       )}
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 my-auto max-h-[90dvh] overflow-y-auto">
-            <h2 className="text-lg font-bold text-slate-800 mb-4">
-              {editingId ? 'Editar Funcionário' : 'Cadastrar Funcionário'}
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto backdrop-blur-sm">
+          <div className="rounded-2xl border border-border bg-card shadow-xl w-full max-w-md p-6 my-auto max-h-[90dvh] overflow-y-auto">
+            <h2 className="text-lg font-bold text-foreground mb-4 tracking-tight">
+              {editingId ? "Editar Funcionário" : "Cadastrar Funcionário"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Nome</label>
-                <input
+                <label className="block text-sm font-medium text-foreground mb-1">
+                  Nome
+                </label>
+                <Input
                   type="text"
                   value={form.nome}
                   onChange={(e) => setForm((p) => ({ ...p, nome: e.target.value }))}
                   required
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                <input
+                <label className="block text-sm font-medium text-foreground mb-1">
+                  Email
+                </label>
+                <Input
                   type="email"
                   value={form.email}
                   onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                   required
                   disabled={!!editingId}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg disabled:bg-slate-100"
                 />
               </div>
               {!editingId && (
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-foreground mb-1">
                     Senha inicial
                   </label>
-                  <input
+                  <Input
                     type="password"
                     value={form.senha}
                     onChange={(e) => setForm((p) => ({ ...p, senha: e.target.value }))}
                     required={!editingId}
                     minLength={6}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg"
                   />
                 </div>
               )}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Valor/hora (R$)
                 </label>
-                <input
+                <Input
                   type="number"
                   step="0.01"
-                  min="0"
+                  min={0}
                   value={form.valor_hora}
-                  onChange={(e) => setForm((p) => ({ ...p, valor_hora: e.target.value }))}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg"
+                  onChange={(e) =>
+                    setForm((p) => ({ ...p, valor_hora: e.target.value }))
+                  }
                 />
               </div>
               <div className="flex gap-3 pt-2">
-                <button
+                <Button
                   type="submit"
                   disabled={criarMutation.isPending || updateMutation.isPending}
-                  className="flex-1 py-2 bg-primary text-white font-medium rounded-xl hover:opacity-90 disabled:opacity-50 min-h-[44px]"
+                  className="flex-1"
                 >
-                  {editingId ? 'Salvar' : 'Cadastrar'}
-                </button>
-                <button
+                  {editingId ? "Salvar" : "Cadastrar"}
+                </Button>
+                <Button
                   type="button"
+                  variant="secondary"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 py-2 bg-slate-200 text-slate-800 font-medium rounded-xl hover:bg-slate-300 min-h-[44px]"
+                  className="flex-1"
                 >
                   Cancelar
-                </button>
+                </Button>
               </div>
             </form>
           </div>

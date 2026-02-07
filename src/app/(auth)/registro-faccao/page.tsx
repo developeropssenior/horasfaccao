@@ -1,8 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function RegistroFaccaoPage() {
   const [nomeFaccao, setNomeFaccao] = useState('');
@@ -50,101 +52,112 @@ export default function RegistroFaccaoPage() {
   }
 
   return (
-    <div className="min-h-dvh flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 px-4 py-12">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-black/5 border border-slate-100 p-8">
+    <div className="min-h-dvh flex items-center justify-center bg-background px-4 py-12">
+      <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-card">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-slate-800">
+          <h1 className="text-2xl font-bold text-foreground tracking-tight">
             Cadastrar Facção
           </h1>
-          <p className="text-sm text-slate-600 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Configure sua facção e crie a conta do administrador
           </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="nomeFaccao" className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label
+              htmlFor="nomeFaccao"
+              className="block text-sm font-medium text-foreground mb-1.5"
+            >
               Nome da Facção
             </label>
-            <input
+            <Input
               id="nomeFaccao"
               type="text"
               value={nomeFaccao}
               onChange={(e) => setNomeFaccao(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
               placeholder="Ex: Facção Costura ABC"
             />
           </div>
           <div>
-            <label htmlFor="nomeAdmin" className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label
+              htmlFor="nomeAdmin"
+              className="block text-sm font-medium text-foreground mb-1.5"
+            >
               Nome do Administrador
             </label>
-            <input
+            <Input
               id="nomeAdmin"
               type="text"
               value={nomeAdmin}
               onChange={(e) => setNomeAdmin(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
               placeholder="Seu nome completo"
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-foreground mb-1.5"
+            >
               Email (será usado para login)
             </label>
-            <input
+            <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
               placeholder="admin@faccao.com"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-foreground mb-1.5"
+            >
               Senha
             </label>
-            <input
+            <Input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
               placeholder="Mínimo 6 caracteres"
             />
           </div>
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-foreground mb-1.5"
+            >
               Confirmar Senha
             </label>
-            <input
+            <Input
               id="confirmPassword"
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-primary transition-colors"
             />
           </div>
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 p-3 rounded-xl">{error}</p>
+            <p className="text-sm text-red-600 bg-red-500/10 p-3 rounded-xl border border-red-500/20">
+              {error}
+            </p>
           )}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 min-h-[48px] bg-primary text-white font-semibold rounded-xl hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
-          >
-            {loading ? 'Cadastrando...' : 'Cadastrar'}
-          </button>
+          <Button type="submit" disabled={loading} className="w-full">
+            {loading ? "Cadastrando..." : "Cadastrar"}
+          </Button>
         </form>
-        <p className="mt-6 text-center text-sm text-slate-600">
-          Já tem conta?{' '}
-          <Link href="/login" className="text-primary hover:underline font-medium">
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          Já tem conta?{" "}
+          <Link
+            href="/login"
+            className="text-primary hover:underline font-medium"
+          >
             Fazer login
           </Link>
         </p>

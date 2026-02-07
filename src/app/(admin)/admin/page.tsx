@@ -84,22 +84,32 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-slate-800 mb-6">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6 tracking-tight">
+        Dashboard
+      </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-2xl shadow-lg shadow-black/5 p-6 hover:shadow-xl transition-shadow">
-          <p className="text-sm text-slate-600">Funcionários ativos</p>
-          <p className="text-3xl font-bold text-slate-800 mt-1">{data.funcionariosAtivos}</p>
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-card hover:shadow-card-hover transition-shadow">
+          <p className="text-sm font-medium text-muted-foreground">
+            Funcionários ativos
+          </p>
+          <p className="text-3xl font-bold text-foreground mt-1 tracking-tight">
+            {data.funcionariosAtivos}
+          </p>
         </div>
-        <div className="bg-white rounded-2xl shadow-lg shadow-black/5 p-6 hover:shadow-xl transition-shadow">
-          <p className="text-sm text-slate-600">Horas em {data.mesAtual}</p>
-          <p className="text-3xl font-bold text-slate-800 mt-1">
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-card hover:shadow-card-hover transition-shadow">
+          <p className="text-sm font-medium text-muted-foreground">
+            Horas em {data.mesAtual}
+          </p>
+          <p className="text-3xl font-bold text-foreground mt-1 tracking-tight">
             {data.totalHorasMes.toFixed(1)}h
           </p>
         </div>
-        <div className="bg-white rounded-2xl shadow-lg shadow-black/5 p-6 hover:shadow-xl transition-shadow">
-          <p className="text-sm text-slate-600">Custo estimado (mês)</p>
-          <p className="text-3xl font-bold text-slate-800 mt-1">
-            R$ {data.custoTotal.toFixed(2).replace('.', ',')}
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-card hover:shadow-card-hover transition-shadow">
+          <p className="text-sm font-medium text-muted-foreground">
+            Custo estimado (mês)
+          </p>
+          <p className="text-3xl font-bold text-foreground mt-1 tracking-tight">
+            R$ {data.custoTotal.toFixed(2).replace(".", ",")}
           </p>
         </div>
       </div>

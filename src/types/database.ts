@@ -68,6 +68,9 @@ export interface Database {
           data_hora: string;
           tipo: 'entrada' | 'saida';
           editado_por: string | null;
+          latitude: number | null;
+          longitude: number | null;
+          precisao_metros: number | null;
           created_at: string;
         };
         Insert: {
@@ -76,6 +79,9 @@ export interface Database {
           data_hora?: string;
           tipo: 'entrada' | 'saida';
           editado_por?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
+          precisao_metros?: number | null;
           created_at?: string;
         };
         Update: {
@@ -84,6 +90,9 @@ export interface Database {
           data_hora?: string;
           tipo?: 'entrada' | 'saida';
           editado_por?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
+          precisao_metros?: number | null;
           created_at?: string;
         };
       };

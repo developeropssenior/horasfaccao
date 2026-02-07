@@ -1,17 +1,30 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import {
+  LayoutDashboard,
+  Users,
+  Clock,
+  CalendarDays,
+  FileText,
+  BarChart3,
+  LogOut,
+  Menu,
+  X,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const links = [
-  { href: '/admin', label: 'Dashboard' },
-  { href: '/admin/funcionarios', label: 'Funcionários' },
-  { href: '/admin/marcacoes', label: 'Marcações' },
-  { href: '/admin/periodos', label: 'Períodos' },
-  { href: '/admin/folha-pagamento', label: 'Folha de Pagamento' },
-  { href: '/admin/relatorios', label: 'Relatórios' },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/funcionarios", label: "Funcionários", icon: Users },
+  { href: "/admin/marcacoes", label: "Marcações", icon: Clock },
+  { href: "/admin/periodos", label: "Períodos", icon: CalendarDays },
+  { href: "/admin/folha-pagamento", label: "Folha de Pagamento", icon: FileText },
+  { href: "/admin/relatorios", label: "Relatórios", icon: BarChart3 },
 ];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -22,93 +35,103 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   async function handleSignOut() {
     await supabase.auth.signOut();
-    router.replace('/login');
+    router.replace("/login");
   }
 
   const navContent = (
     <>
-      <div className="p-4 border-b border-slate-200">
-        <h1 className="font-bold text-slate-800">Controle de Ponto</h1>
-        <p className="text-xs text-slate-500">Painel Admin</p>
+      <div className="p-5 border-b border-border">
+        <h1 className="font-bold text-lg text-foreground tracking-tight">
+          Horas Facção
+        </h1>
+        <p className="text-xs text-muted-foreground mt-0.5">Painel Admin</p>
       </div>
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={() => setDrawerOpen(false)}
-            className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors min-h-[44px] flex items-center ${
-              pathname === link.href
-                ? 'bg-primary/10 text-primary'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-800'
-            }`}
-          >
-            {link.label}
-          </Link>
-        ))}
+      <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
+        {links.map((link) => {
+          const Icon = link.icon;
+          const isActive = pathname === link.href;
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setDrawerOpen(false)}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all min-h-[44px]",
+                isActive
+                  ? "bg-primary/12 text-primary"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              )}
+            >
+              <Icon className="h-5 w-5 flex-shrink-0" strokeWidth={2} />
+              {link.label}
+            </Link>
+          );
+        })}
       </nav>
-      <div className="p-4 border-t border-slate-200">
-        <button
+      <div className="p-3 border-t border-border">
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-3 px-3 py-2.5 h-auto min-h-[44px] text-muted-foreground hover:text-foreground"
           onClick={() => {
             setDrawerOpen(false);
             handleSignOut();
           }}
-          className="w-full text-left px-4 py-3 text-sm text-slate-600 hover:bg-slate-100 rounded-xl min-h-[44px] flex items-center"
         >
+          <LogOut className="h-5 w-5" strokeWidth={2} />
           Sair
-        </button>
+        </Button>
       </div>
     </>
   );
 
   return (
-    <div className="min-h-dvh flex bg-slate-50">
+    <div className="min-h-dvh flex bg-background">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-64 bg-white shadow-sm flex-col flex-shrink-0">
+      <aside className="hidden md:flex w-64 bg-card border-r border-border flex-col flex-shrink-0">
         {navContent}
       </aside>
 
       {/* Mobile header + drawer */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="md:hidden sticky top-0 z-40 bg-white shadow-sm flex items-center justify-between px-4 py-3 pt-safe">
-          <button
+        <header className="md:hidden sticky top-0 z-40 bg-card border-b border-border flex items-center justify-between px-4 py-3 pt-safe">
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setDrawerOpen(true)}
-            className="p-2 -ml-2 rounded-lg text-slate-600 hover:bg-slate-100 min-h-[44px] min-w-[44px] flex items-center justify-center"
             aria-label="Abrir menu"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-          <h1 className="font-bold text-slate-800 truncate">Controle de Ponto</h1>
-          <button
+            <Menu className="h-5 w-5" strokeWidth={2} />
+          </Button>
+          <h1 className="font-bold text-foreground truncate">Horas Facção</h1>
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={handleSignOut}
-            className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg min-h-[44px]"
+            className="text-muted-foreground"
           >
             Sair
-          </button>
+          </Button>
         </header>
 
         {/* Mobile drawer overlay */}
         {drawerOpen && (
           <>
             <div
-              className="md:hidden fixed inset-0 bg-black/50 z-50"
+              className="md:hidden fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
               onClick={() => setDrawerOpen(false)}
               aria-hidden="true"
             />
-            <aside className="md:hidden fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-white shadow-xl z-50 flex flex-col">
-              <div className="p-4 border-b border-slate-200 flex justify-between items-center">
-                <span className="font-bold text-slate-800">Menu</span>
-                <button
+            <aside className="md:hidden fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-card border-r border-border shadow-xl z-50 flex flex-col">
+              <div className="p-4 border-b border-border flex justify-between items-center">
+                <span className="font-bold text-foreground">Menu</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={() => setDrawerOpen(false)}
-                  className="p-2 rounded-lg text-slate-600 hover:bg-slate-100 min-h-[44px] min-w-[44px] flex items-center justify-center"
                   aria-label="Fechar menu"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+                  <X className="h-5 w-5" strokeWidth={2} />
+                </Button>
               </div>
               {navContent}
             </aside>
