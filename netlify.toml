@@ -1,0 +1,6 @@
+[build]
+  command = "npm run build"
+  environment = { NODE_VERSION = "18" }
+
+# Netlify detecta Next.js automaticamente e usa o OpenNext adapter.
+# O publish directory é configurado pelo framework.
